@@ -16,11 +16,10 @@ import {
 import { addToCart, removeFromCart } from "../store/actions/cart-action";
 
 const CartPage = () => {
-  const { productId } = useParams();
   const navigate = useNavigate();
 
   const cartItems = useSelector((state) => state.cart.cartItems);
-  console.log(cartItems);
+  // console.log(cartItems);
 
   // to get the value of qty from the url
   const location = useLocation();
@@ -29,8 +28,9 @@ const CartPage = () => {
 
   const dispatch = useDispatch();
 
-  function removeCartItemHandler() {
-    dispatch(removeFromCart(productId));
+  function removeCartItemHandler(id) {
+    dispatch(removeFromCart(id));
+    // console.log("item deleted", id);
   }
 
   function checkoutHandler() {
@@ -83,7 +83,7 @@ const CartPage = () => {
                     <Button
                       type="button"
                       variant="light"
-                      onClick={removeCartItemHandler}
+                      onClick={() => removeCartItemHandler(item.productId)}
                     >
                       <i className="fas fa-trash"></i>
                     </Button>
