@@ -3,9 +3,14 @@ from django.http import JsonResponse
 # from .products import products
 
 from base.models import Product
-from base.serializers import ProductSerializer
+from base.serializers import ProductSerializer,MyTokenObtainPairSerializer,UserSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
 
 # Create your views here.
 @api_view(['GET'])
@@ -23,6 +28,14 @@ def getRoutes(request):
         '/api/products/<update>/<id>',
     ]
     return Response(routes)
+
+@api_view(['GET'])
+def getUserProfile(request):
+    user = request.user
+    serializer = UserSerializer(user, many=False)
+    return Response(serializer.data)
+
+
 
 @api_view(['GET'])
 def getProducts(request):
