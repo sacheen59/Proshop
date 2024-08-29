@@ -13,7 +13,7 @@ import {
   Button,
   Card,
 } from "react-bootstrap";
-import { addToCart } from "../store/actions/cart-action";
+import { addToCart, removeFromCart } from "../store/actions/cart-action";
 
 const CartPage = () => {
   const { productId } = useParams();
@@ -28,11 +28,13 @@ const CartPage = () => {
 
   const dispatch = useDispatch();
 
-  //   useEffect(() => {
-  //     if (productId) {
-  //       dispatch(addToCart(productId, qty));
-  //     }
-  //   }, [dispatch, productId, qty]);
+  function cartItemRemoveHandler(id) {
+    dispatch(removeFromCart(id));
+  }
+
+  function checkoutHandler() {
+    console.log("Checkout");
+  }
 
   return (
     <Row>
@@ -77,7 +79,11 @@ const CartPage = () => {
                     </Form.Control>
                   </Col>
                   <Col md={1}>
-                    <Button type="button" variant="light">
+                    <Button
+                      type="button"
+                      variant="light"
+                      onClick={() => cartItemRemoveHandler(item.productId)}
+                    >
                       <i className="fas fa-trash"></i>
                     </Button>
                   </Col>
@@ -88,7 +94,34 @@ const CartPage = () => {
         )}
       </Col>
 
-      <Col md={4}>
+      <Col md={4} className="mt-5">
+        <Card className="p-3">
+          <ListGroup variant="flush">
+            <ListGroup.Item>
+              <h2>
+                Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
+                items
+              </h2>
+              Total: &nbsp;$
+              {cartItems
+                .reduce((acc, item) => acc + item.qty * item.price, 0)
+                .toFixed(2)}
+            </ListGroup.Item>
+          </ListGroup>
+
+          <ListGroup.Item>
+            <div className="d-grid">
+              <Button
+                type="button"
+                className="btn-block"
+                disabled={cartItems.length === 0}
+                onClick={checkoutHandler}
+              >
+                Proceed To Checkout
+              </Button>
+            </div>
+          </ListGroup.Item>
+        </Card>
       </Col>
     </Row>
   );
