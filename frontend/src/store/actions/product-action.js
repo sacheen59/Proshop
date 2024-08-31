@@ -11,8 +11,8 @@ export const fetchProductData = () => async (dispatch) => {
   } catch (error) {
     dispatch(
       productActions.productFailure(
-        error.response && error.response.data.message
-          ? error.response.data.message
+        error.response && error.response.data.detail
+          ? error.response.data.detail
           : error.message
       )
     );
@@ -30,8 +30,8 @@ export const fetchProductDetailData = (id) => async (dispatch) => {
   } catch (error) {
     dispatch(
       productDetailActions.productDetailFailure(
-        error.response && error.response.data.message
-          ? error.response.data.message
+        error.response && error.response.data.detail
+          ? error.response.data.detail
           : error.message
       )
     );
